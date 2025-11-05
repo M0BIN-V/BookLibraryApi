@@ -1,4 +1,4 @@
-using BookLibraryApi.Common.Mappers;
+using System.ComponentModel.DataAnnotations;
 using BookLibraryApi.Dtos;
 using BookLibraryApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +16,17 @@ public class BooksController : ControllerBase
         _bookService = bookService;
     }
 
+    [HttpGet]
+    [ProducesResponseType<List<ViewBookDto>>(Status200OK)]
+    [ProducesResponseType(Status400BadRequest)]
+    public async Task<IActionResult> GetAll(
+        [FromQuery] [Range(1, int.MaxValue)] int pageNumber,
+        [FromQuery] [Range(1,100)]int pageSize)
+    {
+        var result = await _bookService.GetAll(pageNumber, pageSize);
+        return Ok(result);
+    }
+
     [HttpGet("{id:int}")]
     [ProducesResponseType<ViewBookDto>(Status200OK)]
     [ProducesResponseType(Status404NotFound)]
@@ -25,7 +36,7 @@ public class BooksController : ControllerBase
 
         if (book is null) return NotFound();
 
-        return Ok(book.ToViewDto());
+        return Ok(book);
     }
 
     [HttpPost]
@@ -35,7 +46,7 @@ public class BooksController : ControllerBase
     {
         var book = await _bookService.AddAsync(request);
 
-        return CreatedAtAction("Get", new { id = book.Id }, book.ToViewDto());
+        return CreatedAtAction("Get", new { id = book.Id }, book);
     }
 
     [HttpPut("{id:int}")]
@@ -51,7 +62,7 @@ public class BooksController : ControllerBase
             successMessage => Ok()
         );
     }
-    
+
     [HttpDelete("{id:int}")]
     [ProducesResponseType(Status204NoContent)]
     [ProducesResponseType(Status404NotFound)]

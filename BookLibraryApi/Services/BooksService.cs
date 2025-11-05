@@ -1,4 +1,5 @@
 using BookLibraryApi.Common.Errors;
+using BookLibraryApi.Common.Mappers;
 using BookLibraryApi.Data;
 using BookLibraryApi.Dtos;
 using BookLibraryApi.Models;
@@ -24,45 +25,59 @@ public class BookService : IBookService
         return deletedCount < 1 ? new BookNotFoundError() : "Book removed successfully.";
     }
 
-    public async Task<OneOf<BookNotFoundError,string>> UpdateAsync(int bookId , UpdateBookDto updateBook)
+    public async Task<OneOf<BookNotFoundError, string>> UpdateAsync(int bookId, UpdateBookDto updateBook)
     {
         var book = await _dbContext.Books.FindAsync(bookId);
-        
-        if(book is null) return new BookNotFoundError();
-        
+
+        if (book is null) return new BookNotFoundError();
+
         book.Title = updateBook.Title;
         book.Author = updateBook.Author;
         book.Genre = updateBook.Genre;
         book.PublishedYear = updateBook.PublishedYear;
-        
+
         await _dbContext.SaveChangesAsync();
-        
+
         return "Book updated successfully.";
     }
 
-    public Task<Book?> GetByIdAsync(int id)
+    public Task<ViewBookDto?> GetByIdAsync(int id)
     {
-        return _dbContext.Books.SingleOrDefaultAsync(b => b.Id == id);
+        return _dbContext.Books.Select(c =>
+            new ViewBookDto
+            {
+                Id = c.Id,
+                Title = c.Title,
+                Author = c.Author,
+                Genre = c.Genre,
+                PublishedYear = c.PublishedYear
+            })
+            .AsNoTracking()
+            .SingleOrDefaultAsync(b => b.Id == id);
     }
 
-    public Task<List<Book>> GetAll(int pageNumber, int pageSize)
+    public async Task<List<ViewBookDto>> GetAll(int pageNumber, int pageSize)
     {
-        throw new NotImplementedException();
+        var result = await _dbContext.Books
+            .FromSqlRaw("EXEC GetAllBooks @PageNumber={0}, @PageSize={1}", pageNumber, pageSize)
+            .ToListAsync();
+
+        return result.Select(r => r.ToViewDto()).ToList();
     }
 
-    public async Task<Book> AddAsync(AddBookRequest book)
+    public async Task<ViewBookDto> AddAsync(AddBookRequest book)
     {
         var newBook = new Book
         {
             Title = book.Title,
             Author = book.Author,
             Genre = book.Genre,
-            PublishedYear = book.PublishedYear,
+            PublishedYear = book.PublishedYear
         };
-        
+
         await _dbContext.Books.AddAsync(newBook);
         await _dbContext.SaveChangesAsync();
 
-        return newBook;
+        return newBook.ToViewDto();
     }
 }
