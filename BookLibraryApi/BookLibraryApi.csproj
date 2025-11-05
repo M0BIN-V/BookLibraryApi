@@ -9,6 +9,7 @@
     <ItemGroup>
         <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="9.5.2" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.10"/>
+        <PackageReference Include="OneOf" Version="3.0.271" />
         <PackageReference Include="Scalar.AspNetCore" Version="2.10.1" />
     </ItemGroup>
 
