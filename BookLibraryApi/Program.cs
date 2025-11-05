@@ -1,3 +1,4 @@
+using BookLibraryApi.Common.Extensions;
 using BookLibraryApi.Data;
 using Scalar.AspNetCore;
 
@@ -14,11 +15,15 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
+
+   await app.EnsureMigrationsApplied<AppDbContext>();
 }
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.MapDefaultEndpoints();
 
 app.MapControllers();
 
