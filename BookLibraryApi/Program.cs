@@ -1,8 +1,10 @@
+using BookLibraryApi.Data;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+builder.AddSqlServerDbContext<AppDbContext>("BookLibraryDb");
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
