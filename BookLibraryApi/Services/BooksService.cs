@@ -60,7 +60,7 @@ public class BookService : IBookService
             PublishedYear = book.PublishedYear,
         };
         
-        await _dbContext.AddAsync(book);
+        await _dbContext.Books.AddAsync(newBook);
         await _dbContext.SaveChangesAsync();
 
         return newBook;

@@ -1,5 +1,6 @@
 using BookLibraryApi.Common.Extensions;
 using BookLibraryApi.Data;
+using BookLibraryApi.Services;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ builder.AddServiceDefaults();
 builder.AddSqlServerDbContext<AppDbContext>("BookLibraryDb");
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+builder.Services.AddScoped<IBookService, BookService>();
 
 var app = builder.Build();
 
@@ -20,8 +22,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapDefaultEndpoints();
 
