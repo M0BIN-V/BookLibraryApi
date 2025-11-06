@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookLibraryApi.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251105184301_Initial")]
+    [Migration("20251106154053_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -38,6 +38,12 @@ namespace BookLibraryApi.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTimeOffset>("BorrowedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int?>("BorrowedById")
+                        .HasColumnType("int");
+
                     b.Property<string>("Genre")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -59,37 +65,9 @@ namespace BookLibraryApi.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BorrowedById");
+
                     b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("BookLibraryApi.Models.BorrowRecord", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("BorrowDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ReturnDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("BorrowRecord");
                 });
 
             modelBuilder.Entity("BookLibraryApi.Models.User", b =>
@@ -118,33 +96,13 @@ namespace BookLibraryApi.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("BookLibraryApi.Models.BorrowRecord", b =>
-                {
-                    b.HasOne("BookLibraryApi.Models.Book", "Book")
-                        .WithOne("CurrentBorrow")
-                        .HasForeignKey("BookLibraryApi.Models.BorrowRecord", "BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookLibraryApi.Models.User", "User")
-                        .WithMany("BorrowedBooks")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("BookLibraryApi.Models.Book", b =>
                 {
-                    b.Navigation("CurrentBorrow");
-                });
+                    b.HasOne("BookLibraryApi.Models.User", "BorrowedBy")
+                        .WithMany()
+                        .HasForeignKey("BorrowedById");
 
-            modelBuilder.Entity("BookLibraryApi.Models.User", b =>
-                {
-                    b.Navigation("BorrowedBooks");
+                    b.Navigation("BorrowedBy");
                 });
 #pragma warning restore 612, 618
         }

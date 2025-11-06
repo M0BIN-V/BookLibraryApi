@@ -5,9 +5,9 @@ namespace BookLibraryApi.Common.Mappers;
 
 public static class BookMapper
 {
-    public static ViewBookDto ToViewDto(this Book book)
+    public static GetBookResult ToViewDto(this Book book)
     {
-        return new ViewBookDto
+        return new GetBookResult()
         {
             Id = book.Id,
             Title = book.Title,

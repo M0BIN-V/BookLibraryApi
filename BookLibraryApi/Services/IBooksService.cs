@@ -7,11 +7,11 @@ namespace BookLibraryApi.Services;
 public interface IBookService
 {
     public Task<OneOf<BookNotFoundError, string>> RemoveAsync(int bookId);
-    public Task<OneOf<BookNotFoundError, string>> UpdateAsync(int bookId, UpdateBookDto updateBook);
+    public Task<OneOf<BookNotFoundError, string>> UpdateAsync(int bookId, UpdateBookRequest updateBook);
 
-    public Task<ViewBookDto?> GetByIdAsync(int id);
+    public Task<GetBookResult?> GetByIdAsync(int id);
 
-    public Task<List<ViewBookDto>> GetAll(int pageNumber, int pageSize);
+    public Task<List<GetBookResult>> GetAll(int pageNumber, int pageSize);
 
-    public Task<ViewBookDto> AddAsync(AddBookRequest book);
+    public Task<GetBookResult> AddAsync(AddBookRequest book);
 }

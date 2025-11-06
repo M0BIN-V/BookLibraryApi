@@ -5,7 +5,7 @@
 namespace BookLibraryApi.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddGetBooksSP : Migration
+    public partial class AddGetAllBooksSp : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

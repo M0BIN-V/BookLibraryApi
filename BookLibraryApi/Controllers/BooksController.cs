@@ -3,6 +3,9 @@ using BookLibraryApi.Dtos;
 using BookLibraryApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
+// ReSharper disable UnusedParameter.Local
+// ReSharper disable ConvertClosureToMethodGroup
+
 namespace BookLibraryApi.Controllers;
 
 [ApiController]
@@ -10,25 +13,42 @@ namespace BookLibraryApi.Controllers;
 public class BooksController : ControllerBase
 {
     readonly IBookService _bookService;
+    readonly IBorrowService _borrowService;
 
-    public BooksController(IBookService bookService)
+    public BooksController(IBookService bookService, IBorrowService borrowService)
     {
         _bookService = bookService;
+        _borrowService = borrowService;
+    }
+
+    [HttpPost("{id:int}/borrow")]
+    [ProducesResponseType<BorrowResult>(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> Borrow(int id, [FromBody] BorrowRequest request)
+    {
+        var result = await _borrowService.BorrowBook(id, request.UserId);
+
+        return result.Match<IActionResult>(
+            userNotFount => NotFound(),
+            bookNotFound => NotFound(),
+            bookAlreadyBorrowed => BadRequest(bookAlreadyBorrowed),
+            successResult => Ok(successResult));
     }
 
     [HttpGet]
-    [ProducesResponseType<List<ViewBookDto>>(Status200OK)]
+    [ProducesResponseType<List<GetBookResult>>(Status200OK)]
     [ProducesResponseType(Status400BadRequest)]
     public async Task<IActionResult> GetAll(
         [FromQuery] [Range(1, int.MaxValue)] int pageNumber,
-        [FromQuery] [Range(1,100)]int pageSize)
+        [FromQuery] [Range(1, 100)] int pageSize)
     {
         var result = await _bookService.GetAll(pageNumber, pageSize);
         return Ok(result);
     }
 
     [HttpGet("{id:int}")]
-    [ProducesResponseType<ViewBookDto>(Status200OK)]
+    [ProducesResponseType<GetBookResult>(Status200OK)]
     [ProducesResponseType(Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
@@ -40,7 +60,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType<ViewBookDto>(Status201Created)]
+    [ProducesResponseType<GetBookResult>(Status201Created)]
     [ProducesResponseType(Status400BadRequest)]
     public async Task<IActionResult> CreateAsync([FromBody] AddBookRequest request)
     {
@@ -53,12 +73,12 @@ public class BooksController : ControllerBase
     [ProducesResponseType(Status200OK)]
     [ProducesResponseType(Status404NotFound)]
     [ProducesResponseType(Status400BadRequest)]
-    public async Task<IActionResult> UpdateAsync(int id, [FromBody] UpdateBookDto request)
+    public async Task<IActionResult> UpdateAsync(int id, [FromBody] UpdateBookRequest request)
     {
         var result = await _bookService.UpdateAsync(id, request);
 
         return result.Match<StatusCodeResult>(
-            notfoundError => NotFound(),
+            notfound => NotFound(),
             successMessage => Ok()
         );
     }
@@ -71,7 +91,7 @@ public class BooksController : ControllerBase
         var result = await _bookService.RemoveAsync(id);
 
         return result.Match<StatusCodeResult>(
-            notfoundError => NotFound(),
+            notfound => NotFound(),
             successMessage => NoContent()
         );
     }

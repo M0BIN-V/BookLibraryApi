@@ -12,8 +12,5 @@ public class UserConfig : IEntityTypeConfiguration<User>
         builder.HasIndex(user => user.Email).IsUnique();
         builder.Property(user => user.Email).HasMaxLength(255);
         builder.Property(uesr => uesr.Name).HasMaxLength(50);
-
-        builder.HasMany(u => u.BorrowedBooks)
-            .WithOne(b => b.User);
     }
 }

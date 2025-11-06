@@ -13,11 +13,12 @@ public class BookConfig : IEntityTypeConfiguration<Book>
         builder.Property(b => b.Author).HasMaxLength(50);
         builder.Property(b => b.Genre).HasMaxLength(50);
 
+        builder.HasOne(b => b.BorrowedBy)
+            .WithMany()
+            .HasForeignKey(b => b.BorrowedById);
+
         builder.Property(b => b.RowVersion)
             .IsRowVersion()
             .IsConcurrencyToken();
-
-        builder.HasOne(b => b.CurrentBorrow)
-            .WithOne(b => b.Book);
     }
 }

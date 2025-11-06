@@ -25,7 +25,7 @@ public class BookService : IBookService
         return deletedCount < 1 ? new BookNotFoundError() : "Book removed successfully.";
     }
 
-    public async Task<OneOf<BookNotFoundError, string>> UpdateAsync(int bookId, UpdateBookDto updateBook)
+    public async Task<OneOf<BookNotFoundError, string>> UpdateAsync(int bookId, UpdateBookRequest updateBook)
     {
         var book = await _dbContext.Books.FindAsync(bookId);
 
@@ -41,10 +41,9 @@ public class BookService : IBookService
         return "Book updated successfully.";
     }
 
-    public Task<ViewBookDto?> GetByIdAsync(int id)
+    public Task<GetBookResult?> GetByIdAsync(int id)
     {
-        return _dbContext.Books.Select(c =>
-            new ViewBookDto
+        return _dbContext.Books.Select(c => new GetBookResult()
             {
                 Id = c.Id,
                 Title = c.Title,
@@ -56,7 +55,7 @@ public class BookService : IBookService
             .SingleOrDefaultAsync(b => b.Id == id);
     }
 
-    public async Task<List<ViewBookDto>> GetAll(int pageNumber, int pageSize)
+    public async Task<List<GetBookResult>> GetAll(int pageNumber, int pageSize)
     {
         var result = await _dbContext.Books
             .FromSqlRaw("EXEC GetAllBooks @PageNumber={0}, @PageSize={1}", pageNumber, pageSize)
@@ -65,7 +64,7 @@ public class BookService : IBookService
         return result.Select(r => r.ToViewDto()).ToList();
     }
 
-    public async Task<ViewBookDto> AddAsync(AddBookRequest book)
+    public async Task<GetBookResult> AddAsync(AddBookRequest book)
     {
         var newBook = new Book
         {

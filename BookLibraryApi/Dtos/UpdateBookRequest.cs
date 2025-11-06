@@ -3,7 +3,7 @@ using BookLibraryApi.Common.Validators;
 
 namespace BookLibraryApi.Dtos;
 
-public class UpdateBookDto
+public class UpdateBookRequest
 {
     [Required] [StringLength(50)]
     public required string Title { get; set; }

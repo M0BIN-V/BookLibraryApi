@@ -10,6 +10,7 @@ builder.AddSqlServerDbContext<AppDbContext>("BookLibraryDb");
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IBorrowService, BorrowService>();
 
 var app = builder.Build();
 
@@ -19,6 +20,7 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 
    await app.EnsureMigrationsApplied<AppDbContext>();
+   await app.AddFakeData();
 }
 
 app.UseHttpsRedirection();

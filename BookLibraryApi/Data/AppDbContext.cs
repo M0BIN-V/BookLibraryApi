@@ -7,6 +7,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 {
     public DbSet<Book> Books { get; init; }
     public DbSet<User> Users { get; set; }
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
