@@ -35,7 +35,7 @@ namespace BookLibraryApi.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTimeOffset>("BorrowedAt")
+                    b.Property<DateTimeOffset?>("BorrowedAt")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("BorrowedById")
@@ -48,12 +48,6 @@ namespace BookLibraryApi.Data.Migrations
 
                     b.Property<int>("PublishedYear")
                         .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -97,7 +91,8 @@ namespace BookLibraryApi.Data.Migrations
                 {
                     b.HasOne("BookLibraryApi.Models.User", "BorrowedBy")
                         .WithMany()
-                        .HasForeignKey("BorrowedById");
+                        .HasForeignKey("BorrowedById")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("BorrowedBy");
                 });

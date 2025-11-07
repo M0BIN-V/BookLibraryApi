@@ -10,4 +10,9 @@ public interface IBorrowService
         BookNotFoundError,
         BookAlreadyBorrowedError,
         BorrowResult>> BorrowBook(int bookId, int userId);
+
+    public Task<OneOf<
+        BookNotFoundError,
+        BookNotBorrowedByUserError,
+        string>> ReturnBook(int bookId, int userId);
 }

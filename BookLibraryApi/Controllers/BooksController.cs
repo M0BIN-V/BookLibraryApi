@@ -21,10 +21,24 @@ public class BooksController : ControllerBase
         _borrowService = borrowService;
     }
 
+    [HttpPost("{id:int}/return")]
+    [ProducesResponseType<BorrowResult>(Status204NoContent)]
+    [ProducesResponseType(Status400BadRequest)]
+    [ProducesResponseType(Status404NotFound)]
+    public async Task<IActionResult> Return(int id, [FromBody] BorrowRequest request)
+    {
+        var result = await _borrowService.ReturnBook(id, request.UserId);
+
+        return result.Match<IActionResult>(
+            bookNotFound => NotFound(),
+            bookNotBorrowedByUserError => BadRequest(bookNotBorrowedByUserError),
+            success => NoContent());
+    }
+
     [HttpPost("{id:int}/borrow")]
-    [ProducesResponseType<BorrowResult>(200)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType<BorrowResult>(Status200OK)]
+    [ProducesResponseType(Status400BadRequest)]
+    [ProducesResponseType(Status404NotFound)]
     public async Task<IActionResult> Borrow(int id, [FromBody] BorrowRequest request)
     {
         var result = await _borrowService.BorrowBook(id, request.UserId);
@@ -40,8 +54,9 @@ public class BooksController : ControllerBase
     [ProducesResponseType<List<GetBookResult>>(Status200OK)]
     [ProducesResponseType(Status400BadRequest)]
     public async Task<IActionResult> GetAll(
-        [FromQuery] [Range(1, int.MaxValue)] int pageNumber,
-        [FromQuery] [Range(1, 100)] int pageSize)
+        [FromQuery] [Required] [Range(1, int.MaxValue)]
+        int pageNumber,
+        [FromQuery] [Required] [Range(1, 100)] int pageSize)
     {
         var result = await _bookService.GetAll(pageNumber, pageSize);
         return Ok(result);

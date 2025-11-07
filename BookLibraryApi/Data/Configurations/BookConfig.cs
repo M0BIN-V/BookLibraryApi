@@ -15,10 +15,7 @@ public class BookConfig : IEntityTypeConfiguration<Book>
 
         builder.HasOne(b => b.BorrowedBy)
             .WithMany()
-            .HasForeignKey(b => b.BorrowedById);
-
-        builder.Property(b => b.RowVersion)
-            .IsRowVersion()
-            .IsConcurrencyToken();
+            .HasForeignKey(b => b.BorrowedById)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

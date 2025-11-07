@@ -19,8 +19,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 
-   await app.EnsureMigrationsApplied<AppDbContext>();
-   await app.AddFakeData();
+    await app.EnsureMigrationsApplied<AppDbContext>();
+    await app.AddFakeData();
 }
 
 app.UseHttpsRedirection();

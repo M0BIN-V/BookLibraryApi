@@ -35,9 +35,8 @@ namespace BookLibraryApi.Data.Migrations
                     Author = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Genre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PublishedYear = table.Column<int>(type: "int", nullable: false),
-                    BorrowedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    BorrowedById = table.Column<int>(type: "int", nullable: true),
-                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
+                    BorrowedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    BorrowedById = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -46,7 +45,8 @@ namespace BookLibraryApi.Data.Migrations
                         name: "FK_Books_Users_BorrowedById",
                         column: x => x.BorrowedById,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateIndex(

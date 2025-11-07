@@ -26,7 +26,8 @@ namespace BookLibraryApi.Data.Migrations
                     b.Author,
                     b.Genre,
                     b.PublishedYear,
-                    b.RowVersion
+                    b.BorrowedAt,
+                    b.BorrowedById
                 FROM Books b
                 ORDER BY b.Id
                 OFFSET @Offset ROWS
