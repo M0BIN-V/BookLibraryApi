@@ -1,5 +1,6 @@
 using BookLibraryApi.Common.Extensions;
 using BookLibraryApi.Data;
+using BookLibraryApi.Middlewares;
 using BookLibraryApi.Services;
 using Scalar.AspNetCore;
 
@@ -9,6 +10,7 @@ builder.AddServiceDefaults();
 builder.AddSqlServerDbContext<AppDbContext>("BookLibraryDb");
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+builder.Services.AddSingleton<RequestLoggingMiddleware>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IBorrowService, BorrowService>();
 
@@ -22,6 +24,8 @@ if (app.Environment.IsDevelopment())
     await app.EnsureMigrationsApplied<AppDbContext>();
     await app.AddFakeData();
 }
+
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.UseHttpsRedirection();
 
