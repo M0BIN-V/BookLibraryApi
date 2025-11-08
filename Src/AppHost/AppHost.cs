@@ -7,7 +7,7 @@ var database = builder
     .WithLifetime(ContainerLifetime.Persistent)
     .AddDatabase("BookLibraryDb");
 
-builder.AddProject<BookLibraryApi>("api")
+builder.AddProject<Api>("api")
     .WithReference(database)
     .WaitFor(database);
 
