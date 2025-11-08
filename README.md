@@ -5,23 +5,22 @@ Built with **.NET 9** and **Entity Framework Core**.
 
 ## 📑 Table of Contents
 
-1. [📚 Book Library API](#-book-library-api)
-2. [⚙️ Setup](#️-setup)
+1. [⚙️ Setup](#Setup)
     - [1️⃣ Clone the repository](#1-clone-the-repository)
     - [2️⃣ Configure Connection String](#2-replace-configure-connection-string)
     - [3️⃣ Run API Project](#3-run-api-project)
     - [💡 Development Mode](#development-mode)
-3. [🔗 API Endpoints](#-api-endpoints-with-curl-examples)
-    - [➕ Add Book](#add-book)
+2. [🔗 API Endpoints](#API-Endpoints)
+    - [➕ Add Book](#Add-Book)
     - [📖 Borrow Book](#borrow-book)
-4. [🧠 Key Design Decisions](#-key-design-decisions)
-    - [🪵 Logging via Middleware](#-logging-via-middleware)
-    - [📦 Simple Domain Model Design](#-simple-domain-model-design)
-    - [✅ Validation and Error Handling](#-validation-and-error-handling)
-    - [📄 Pagination](#-pagination)
-    - [🔒 Atomic Borrow Operation](#-atomic-borrow-operation)
-    - [⚙️ Stored Procedure](#-stored-procedure)
-
+3. [🧠 Key Design Decisions](#key-design-decisions)
+    - [🪵 Logging via Middleware](#1-Logging-via-Middleware)
+    - [📦 Simple Domain Model Design](#2-simple-domain-model-design)
+    - [✅ Validation and Error Handling](#3-validation-and-error-handling)
+    - [📄 Pagination](#4-pagination)
+    - [🔒 Atomic Borrow Operation](#5-atomic-borrow-operation)
+    - [⚙️ Stored Procedure](#6-stored-procedure)
+---
 ## Setup
 ### 1. Clone the repository
 ```bash
@@ -30,6 +29,7 @@ git clone https://github.com/M0BIN-V/BookLibraryApi.git
 
 ### 2. Replace Configure Connection String
 Open appsettings.json or appsettings.Development.json in `BookLibraryApi\Src\Api` and set ConnectionStrings:BookLibraryDb:
+
 ```json
 {
   "ConnectionStrings": {
@@ -61,11 +61,13 @@ So you don’t need to run:
 dotnet ef database update
 ```
 
-## API Endpoints (with CURL examples)
+---
+
+## API Endpoints
 
 Below are some examples of how to interact with the API using `curl`.
 
-### Add Book 
+### Add Book
 ```bash
 curl http://localhost:52636/api/Books \
   --request POST \
@@ -87,10 +89,11 @@ curl http://localhost:52636/api/Books/1/borrow \
   "userId": 1
 }'
 ```
+---
 
 ## Key Design Decisions
 
-### **Logging via Middleware**
+### 1. Logging via Middleware
 
 Instead of logging in each controller action, a **Middleware** is used to handle request logging. This approach ensures that:
 
@@ -105,7 +108,8 @@ Instead of logging in each controller action, a **Middleware** is used to handle
 
 Additionally, if logging **domain-specific events** is needed, `ILogger` can be used within **services** or **controllers**.
 
-### **Simple Domain Model Design**
+
+### 2. Simple Domain Model Design
 
 At this stage, only two entities, `User` and `Book`, have been implemented.  
 A separate table for borrow records (Borrow) was intentionally omitted to keep the model as **lightweight** and **easy to understand** as possible.
@@ -114,7 +118,7 @@ However, if tracking the borrowing history becomes necessary, the recommended ap
 This ensures better **scalability**, **separation of concerns**, and **maintainability** of the system.
 
 
-### **Validation and error handling**
+### 3. Validation and error handling
 
 To handle logical errors, the **Result Pattern** has been implemented in order to:
 
@@ -130,13 +134,13 @@ Additionally, for data validation, **DataAnnotations** are used given the simpli
 However, in cases where more complex validation is required, **FluentValidation** is recommended.
 
 
-### **Pagination**
+### 4. Pagination
 
 Pagination is implemented using simple `page` and `size` parameters.  
 If the goal is to further optimize **performance** and **resource usage**, and there is no need for complex data filtering, more advanced methods such as **Cursor-Based Pagination** can be used.
 
 
-### **Atomic Borrow Operation**
+### 5. Atomic Borrow Operation
 
 The process of borrowing a book is performed **atomically** using the `ExecuteUpdateAsync` method,  
 ensuring that the check for whether the book is available and the update of its status happen in a single atomic operation.
@@ -151,7 +155,7 @@ If a higher level of coordination is required (especially in distributed systems
 mechanisms such as **Redlock**, **queues**, or other distributed synchronization techniques can be used.
 
 
-### **Stored Procedure**
+### 6. Stored Procedure
 
 According to the task requirements, a **Stored Procedure (SP)** is used to retrieve the list of books.
 
