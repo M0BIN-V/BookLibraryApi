@@ -1,3 +1,93 @@
+# 📚 Book Library API
+
+A simple RESTful API for managing books and borrowing them.  
+Built with **.NET 9** and **Entity Framework Core**.
+
+## 📑 Table of Contents
+
+1. [📚 Book Library API](#-book-library-api)
+2. [⚙️ Setup](#️-setup)
+    - [1️⃣ Clone the repository](#1-clone-the-repository)
+    - [2️⃣ Configure Connection String](#2-replace-configure-connection-string)
+    - [3️⃣ Run API Project](#3-run-api-project)
+    - [💡 Development Mode](#development-mode)
+3. [🔗 API Endpoints](#-api-endpoints-with-curl-examples)
+    - [➕ Add Book](#add-book)
+    - [📖 Borrow Book](#borrow-book)
+4. [🧠 Key Design Decisions](#-key-design-decisions)
+    - [🪵 Logging via Middleware](#-logging-via-middleware)
+    - [📦 Simple Domain Model Design](#-simple-domain-model-design)
+    - [✅ Validation and Error Handling](#-validation-and-error-handling)
+    - [📄 Pagination](#-pagination)
+    - [🔒 Atomic Borrow Operation](#-atomic-borrow-operation)
+    - [⚙️ Stored Procedure](#-stored-procedure)
+
+## Setup
+### 1. Clone the repository
+```bash
+git clone https://github.com/M0BIN-V/BookLibraryApi.git
+```
+
+### 2. Replace Configure Connection String
+Open appsettings.json or appsettings.Development.json in `BookLibraryApi\Src\Api` and set ConnectionStrings:BookLibraryDb:
+```json
+{
+  "ConnectionStrings": {
+    "BookLibraryDb": "YOUR SQLSERVER CONNECTION STRING"
+  }
+}
+```
+
+### 3. Run API Project
+In directory `BookLibraryApi\Src\Api` run this command:
+```bash
+dotnet run 
+```
+
+Done!
+
+>Alternatively, you can run both the `API` and `SQL Server` through **Aspire** by launching `AppHost.csproj`
+
+### Development Mode
+
+When running in **Development** environment:
+
+- All **EF Core migrations** will be **applied automatically** on startup.
+
+- **Fake users and books** will be **seeded** into the database for testing.
+
+So you don’t need to run:
+```bash
+dotnet ef database update
+```
+
+## API Endpoints (with CURL examples)
+
+Below are some examples of how to interact with the API using `curl`.
+
+### Add Book 
+```bash
+curl http://localhost:52636/api/Books \
+  --request POST \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "title": "",
+  "author": "",
+  "genre": "",
+  "publishedYear": 1
+}'
+```
+
+### Borrow Book
+```bash
+curl http://localhost:52636/api/Books/1/borrow \
+  --request POST \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "userId": 1
+}'
+```
+
 ## Key Design Decisions
 
 ### **Logging via Middleware**
