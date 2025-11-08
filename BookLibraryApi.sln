@@ -3,6 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5B884066-E79C-4FA6-9DD8-BC2A4DD0507C}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
@@ -14,6 +15,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceDefaults", "Src\ServiceDefaults\ServiceDefaults.csproj", "{45D8B365-B4F6-43B3-9B2A-49358F9C0D23}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E2283261-EF63-4A8C-A0E9-4543DD6A7DBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "Tests\UnitTests\UnitTests.csproj", "{97C741F5-6266-44F7-B753-D5BF61DD7C96}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{4B06DA47-81FD-4331-A856-4BBDBC53E5CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{D8CD0F36-DF65-4370-A6CB-41D850859257}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci-cd.yaml = .github\workflows\ci-cd.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +71,18 @@ Global
 		{45D8B365-B4F6-43B3-9B2A-49358F9C0D23}.Release|x64.Build.0 = Release|Any CPU
 		{45D8B365-B4F6-43B3-9B2A-49358F9C0D23}.Release|x86.ActiveCfg = Release|Any CPU
 		{45D8B365-B4F6-43B3-9B2A-49358F9C0D23}.Release|x86.Build.0 = Release|Any CPU
+		{97C741F5-6266-44F7-B753-D5BF61DD7C96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97C741F5-6266-44F7-B753-D5BF61DD7C96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97C741F5-6266-44F7-B753-D5BF61DD7C96}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{97C741F5-6266-44F7-B753-D5BF61DD7C96}.Debug|x64.Build.0 = Debug|Any CPU
+		{97C741F5-6266-44F7-B753-D5BF61DD7C96}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{97C741F5-6266-44F7-B753-D5BF61DD7C96}.Debug|x86.Build.0 = Debug|Any CPU
+		{97C741F5-6266-44F7-B753-D5BF61DD7C96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97C741F5-6266-44F7-B753-D5BF61DD7C96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97C741F5-6266-44F7-B753-D5BF61DD7C96}.Release|x64.ActiveCfg = Release|Any CPU
+		{97C741F5-6266-44F7-B753-D5BF61DD7C96}.Release|x64.Build.0 = Release|Any CPU
+		{97C741F5-6266-44F7-B753-D5BF61DD7C96}.Release|x86.ActiveCfg = Release|Any CPU
+		{97C741F5-6266-44F7-B753-D5BF61DD7C96}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,5 +91,8 @@ Global
 		{63737BD3-00B5-422E-B20B-C1C66D96BC73} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{53253308-36D2-441F-A973-31D7D282D0A5} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{45D8B365-B4F6-43B3-9B2A-49358F9C0D23} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{97C741F5-6266-44F7-B753-D5BF61DD7C96} = {E2283261-EF63-4A8C-A0E9-4543DD6A7DBF}
+		{4B06DA47-81FD-4331-A856-4BBDBC53E5CA} = {5B884066-E79C-4FA6-9DD8-BC2A4DD0507C}
+		{D8CD0F36-DF65-4370-A6CB-41D850859257} = {4B06DA47-81FD-4331-A856-4BBDBC53E5CA}
 	EndGlobalSection
 EndGlobal
