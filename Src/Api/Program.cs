@@ -21,7 +21,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapScalarApiReference(options =>
+    {
+        options.DynamicBaseServerUrl = true;
+    });
 
     await app.EnsureMigrationsApplied<AppDbContext>();
     await app.AddFakeData();
