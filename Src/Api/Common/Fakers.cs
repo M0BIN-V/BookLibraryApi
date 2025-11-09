@@ -1,7 +1,7 @@
 using Api.Models;
 using Bogus;
 
-namespace Api;
+namespace Api.Common;
 
 public static class Fakers
 {
