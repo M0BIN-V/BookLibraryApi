@@ -22,10 +22,7 @@ builder.Services.AddOpenApi(options =>
             .GetRequiredService<IHttpContextAccessor>()
             .HttpContext!.Request;
 
-        document.Servers = new List<OpenApiServer>
-        {
-            new (){Url = $"{request.Scheme}://{request.Host.Value}" }
-        };
+        document.Servers = new List<OpenApiServer> { };
         
        return Task.CompletedTask;
     });
