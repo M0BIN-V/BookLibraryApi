@@ -2,7 +2,7 @@ namespace Api.Middlewares;
 
 public class RequestLoggingMiddleware : IMiddleware
 {
-    ILogger<RequestLoggingMiddleware> _logger;
+    readonly ILogger<RequestLoggingMiddleware> _logger;
 
     public RequestLoggingMiddleware(ILogger<RequestLoggingMiddleware> logger)
     {

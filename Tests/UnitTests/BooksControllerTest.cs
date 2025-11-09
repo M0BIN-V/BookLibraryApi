@@ -2,7 +2,6 @@
 using Api.Dtos;
 using Api.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Shouldly;
 using static NSubstitute.Arg;
@@ -14,7 +13,6 @@ public class BooksControllerTest
 {
     readonly IBookService _bookService = For<IBookService>();
     readonly IBorrowService _borrowService = For<IBorrowService>();
-    readonly ILogger<BooksController> _logger = For<ILogger<BooksController>>();
 
     [Fact]
     public async Task CreateBook_ShouldReturn201()
@@ -36,7 +34,7 @@ public class BooksControllerTest
                 Genre = request.Genre,
                 PublishedYear = request.PublishedYear
             });
-        var controller = new BooksController(_bookService, _borrowService, _logger);
+        var controller = new BooksController(_bookService, _borrowService);
 
         //Act
         var result = await controller.CreateAsync(request);
@@ -52,7 +50,7 @@ public class BooksControllerTest
         _bookService.GetByIdAsync(999)
             .Returns(Task.FromResult<GetBookResult?>(null));
         const int requestBookId = 999;
-        var controller = new BooksController(_bookService, _borrowService, _logger);
+        var controller = new BooksController(_bookService, _borrowService);
 
         //Act
         var result = await controller.Get(requestBookId);

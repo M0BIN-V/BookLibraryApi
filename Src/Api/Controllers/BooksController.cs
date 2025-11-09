@@ -14,13 +14,11 @@ public class BooksController : ControllerBase
 {
     readonly IBookService _bookService;
     readonly IBorrowService _borrowService;
-    readonly ILogger<BooksController> _logger;
 
-    public BooksController(IBookService bookService, IBorrowService borrowService, ILogger<BooksController> logger)
+    public BooksController(IBookService bookService, IBorrowService borrowService)
     {
         _bookService = bookService;
         _borrowService = borrowService;
-        _logger = logger;
     }
 
     [HttpPost("{id:int}/return")]
@@ -29,8 +27,6 @@ public class BooksController : ControllerBase
     [ProducesResponseType(Status404NotFound)]
     public async Task<IActionResult> Return(int id, [FromBody] BorrowRequest request)
     {
-        _logger.LogInformation("{Endpoint} / ");
-        
         var result = await _borrowService.ReturnBook(id, request.UserId);
 
         return result.Match<IActionResult>(

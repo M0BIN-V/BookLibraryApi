@@ -2,12 +2,15 @@ using Api.Common.Extensions;
 using Api.Data;
 using Api.Middlewares;
 using Api.Services;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
-builder.AddSqlServerDbContext<AppDbContext>("BookLibraryDb");
+
+builder.Services.AddDbContext<AppDbContext>(options=>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BookLibraryDb")));
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<RequestLoggingMiddleware>();
