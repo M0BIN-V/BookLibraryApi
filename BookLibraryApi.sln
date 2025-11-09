@@ -23,7 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{4B06
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{D8CD0F36-DF65-4370-A6CB-41D850859257}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\ci-cd.yaml = .github\workflows\ci-cd.yaml
+		.github\workflows\deploy.yaml = .github\workflows\deploy.yaml
+		.github\workflows\test.yaml = .github\workflows\test.yaml
 	EndProjectSection
 EndProject
 Global

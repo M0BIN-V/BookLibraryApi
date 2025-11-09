@@ -1,0 +1,33 @@
+name: CI - Build and Test
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Ensure tag is from master branch
+        run: |
+          TAG_COMMIT=$(git rev-list -n 1 ${{ github.ref }})
+          MAIN_COMMIT=$(git rev-parse origin/master)
+
+          if [ "$TAG_COMMIT" != "$MAIN_COMMIT" ]; then
+            exit 1
+          fi
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 9.x
+
+      - name: Test
+        run: dotnet test --verbosity normal
