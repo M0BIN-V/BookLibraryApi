@@ -1,11 +1,12 @@
 ![Tests Status](https://github.com/M0BIN-V/BookLibraryApi/actions/workflows/test.yaml/badge.svg) ![Tests Status](https://github.com/M0BIN-V/BookLibraryApi/actions/workflows/deploy.yaml/badge.svg)
 
 
-
 # 📚 Book Library API
 
 A simple RESTful API for managing books and borrowing them.  
 Built with **.NET 9** and **Entity Framework Core**.
+
+### You can access the deployed API here: [Book Library API](https://book-library-api.liara.run/scalar)
 
 ## 📑 Table of Contents
 
@@ -69,8 +70,9 @@ dotnet ef database update
 
 ## API Endpoints
 
-Below are some examples of how to interact with the API using `curl`.
+>You can test and view the API endpoints documentation at the `/scalar` endpoint.
 
+### Test endpoints using **curl** :
 ### Add Book
 ```bash
 curl http://localhost:52636/api/Books \
