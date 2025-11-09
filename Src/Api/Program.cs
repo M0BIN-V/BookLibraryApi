@@ -3,28 +3,29 @@ using Api.Data;
 using Api.Middlewares;
 using Api.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
-builder.Services.AddDbContext<AppDbContext>(options=>
+builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BookLibraryDb")));
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddOpenApi(options =>
 {
-    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    options.AddDocumentTransformer((document, _, _) =>
     {
-        var request = context.ApplicationServices
-            .GetRequiredService<IHttpContextAccessor>()
-            .HttpContext!.Request;
+        var url = builder.Configuration["OpenApi:Url"];
 
-        document.Servers = new List<OpenApiServer> { };
-        
-       return Task.CompletedTask;
+        if (!string.IsNullOrWhiteSpace(url))
+            document.Servers = new List<OpenApiServer>
+            {
+                new() { Url = url }
+            };
+
+        return Task.CompletedTask;
     });
 });
 builder.Services.AddSingleton<RequestLoggingMiddleware>();
