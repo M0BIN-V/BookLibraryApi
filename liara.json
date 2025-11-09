@@ -1,0 +1,10 @@
+{
+  "dotnet": {
+    "version": "9.0",
+    "finalDllName": "Api",
+    "csprojectFile": "Src/Api/Api.csproj"
+  },
+  "build": {
+    "location": "iran"
+  }
+}
