@@ -1,3 +1,7 @@
+![Tests Status](https://github.com/M0BIN-V/BookLibraryApi/actions/workflows/test.yaml/badge.svg) ![Tests Status](https://github.com/M0BIN-V/BookLibraryApi/actions/workflows/deploy.yaml/badge.svg)
+
+
+
 # 📚 Book Library API
 
 A simple RESTful API for managing books and borrowing them.  
